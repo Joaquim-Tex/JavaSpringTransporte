@@ -48,3 +48,7 @@ Java version: 25.0.2
 Se ainda aparecer Java 24, não prossigas para a compilação: precisamos corrigir o ambiente primeiro. 3. Tenta iniciar novamente
 Se o Maven mostrar Java 25, executa:
 ./mvnw clean spring-boot:run
+
+## Backlog
+
+Os requisitos pendentes para implementar os serviços de linhas, ônibus, paradas e solicitações estão descritos em [BACKLOG.md](./BACKLOG.md).
