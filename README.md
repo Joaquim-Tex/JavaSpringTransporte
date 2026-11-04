@@ -2,6 +2,50 @@
 
 Para contribuir, Certifique-se de documentar as alterações realizadas tanto no código quanto nos outros itens do repositório. Escreva seus pull requests de maneira que os outros possam entender com o que estamos trabalhando e rastrear erros com mais facilidade.
 
+## Objetivo do projeto
+
+A aplicação permitirá que o usuário consulte os ônibus disponíveis em uma linha, escolha onde embarcar e desembarcar e registre sua viagem. Ao confirmar a solicitação, o sistema atualizará a lotação do ônibus nos trechos percorridos.
+
+## Serviços esperados
+
+### Consultar linhas e ônibus
+
+1. O usuário acessa a opção de consulta de linhas.
+2. O sistema apresenta até três linhas disponíveis para seleção.
+3. Após a escolha de uma linha, o sistema lista os ônibus associados a ela.
+4. Para cada ônibus, o sistema informa:
+   - se está em trânsito ou estacionado;
+   - o horário de saída;
+   - a quantidade atual de passageiros e a capacidade máxima.
+
+### Consultar o percurso e escolher as paradas
+
+1. Ao selecionar um ônibus, o usuário consulta sua posição atual e as paradas da linha.
+2. As paradas são identificadas por números e apresentadas na ordem em que são percorridas.
+3. O usuário informa a parada em que pretende embarcar e a parada em que pretende desembarcar.
+4. O sistema aceita a seleção somente se ambas as paradas pertencerem à linha escolhida e se a parada de desembarque vier depois da parada de embarque no sentido do percurso.
+5. Se a seleção for inválida, o sistema informa o motivo e não registra a solicitação.
+
+### Registrar a viagem e atualizar a lotação
+
+1. Antes de confirmar a solicitação, o sistema verifica se há capacidade em todos os trechos entre as paradas de embarque e desembarque.
+2. Se qualquer um desses trechos estiver lotado, a solicitação não é confirmada e o sistema informa que não há capacidade disponível.
+3. Se houver capacidade em todos os trechos, o sistema confirma a solicitação e acrescenta um passageiro à lotação de cada trecho percorrido.
+4. A lotação dos trechos anteriores ao embarque e posteriores ao desembarque não é alterada.
+5. Após a confirmação, o sistema apresenta a lotação atualizada por trecho.
+
+## Regras de negócio
+
+- A aplicação disponibiliza no máximo três linhas.
+- Cada ônibus pertence a uma linha e possui capacidade máxima definida.
+- A ordem das paradas determina o sentido do percurso.
+- A parada de desembarque deve vir depois da parada de embarque.
+- A lotação é controlada por trecho, pois passageiros podem embarcar e desembarcar em pontos diferentes.
+- Uma solicitação só é confirmada se todos os trechos percorridos tiverem capacidade disponível.
+- Cada solicitação confirmada acrescenta exatamente um passageiro aos trechos entre embarque e desembarque.
+
+As tarefas necessárias para implementar esses serviços estão listadas em [BACKLOG.md](./BACKLOG.md).
+
 ## Como executar o projeto
 
 ### Pré-requisitos
@@ -48,7 +92,3 @@ Java version: 25.0.2
 Se ainda aparecer Java 24, não prossigas para a compilação: precisamos corrigir o ambiente primeiro. 3. Tenta iniciar novamente
 Se o Maven mostrar Java 25, executa:
 ./mvnw clean spring-boot:run
-
-## Backlog
-
-Os requisitos pendentes para implementar os serviços de linhas, ônibus, paradas e solicitações estão descritos em [BACKLOG.md](./BACKLOG.md).

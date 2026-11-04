@@ -1,99 +1,70 @@
-# Backlog do serviço de transporte
+# Backlog
 
-Este backlog descreve o trabalho necessário para entregar os fluxos de consulta de linhas e ônibus e solicitação de embarque e desembarque. Os itens abaixo ainda não estão implementados.
-
-## 1. Definir e persistir linhas, ônibus e paradas
-
-**Objetivo:** fornecer os dados que alimentam as consultas do serviço.
-
-**Instruções:**
-- Definir o modelo de linha, ônibus e parada, incluindo identificadores estáveis.
-- Associar cada ônibus a uma linha e cada parada à sua posição ordenada nessa linha.
-- Restringir a configuração a no máximo três linhas, conforme o requisito atual.
-- Registrar para cada ônibus a capacidade, a contagem inicial de passageiros, o horário de saída e o estado (em trânsito ou estacionado).
-- Escolher e configurar persistência para que os dados sobrevivam ao reinício da aplicação.
-
-**Critérios de aceite:**
-- É possível cadastrar e consultar até três linhas e seus dados associados.
-- Não é possível cadastrar uma quarta linha nem passageiros acima da capacidade.
-- Os dados permanecem disponíveis após reiniciar a aplicação.
-- Testes cobrem validações e relações entre linhas, ônibus e paradas.
-
-## 2. Consultar linhas e ônibus
-
-**Objetivo:** permitir que o usuário escolha uma linha e veja seus ônibus disponíveis.
-
-**Instruções:**
-- Criar endpoints para listar as linhas e listar os ônibus de uma linha.
-- Retornar para cada ônibus o estado, horário de saída, passageiros atuais e capacidade máxima.
-- Definir e documentar como são tratados ônibus estacionados e em trânsito.
-- Validar identificadores e responder claramente quando a linha ou o ônibus não existir.
-
-**Critérios de aceite:**
-- A consulta de linhas retorna no máximo as linhas configuradas.
-- A consulta de uma linha retorna apenas os ônibus associados a ela e os campos de situação e lotação.
-- Respostas para identificadores inválidos têm status HTTP apropriado e não retornam dados fictícios.
-- Testes cobrem listagem, associação e erros de consulta.
-
-## 3. Consultar percurso, paradas e posição do ônibus
-
-**Objetivo:** apresentar o itinerário e permitir a seleção válida dos pontos de embarque e desembarque.
-
-**Instruções:**
-- Expor as paradas da linha em ordem, com seus números/identificadores.
-- Registrar e consultar a posição atual do ônibus no percurso.
-- Receber os números das paradas em que o usuário pretende subir e descer.
-- Validar que as duas paradas pertencem à linha escolhida e que a parada de descida vem depois da de subida no sentido do ônibus.
-
-**Critérios de aceite:**
-- O usuário consegue consultar o número e a ordem das paradas e a posição atual do ônibus.
-- Seleções de parada inexistente ou de outra linha são rejeitadas.
-- Uma descida igual ou anterior à subida é rejeitada; uma descida posterior é aceita.
-- Testes cobrem os limites e a ordenação do percurso.
-
-## 4. Registrar solicitação e atualizar lotação por trecho
-
-**Objetivo:** contabilizar um passageiro apenas no trecho em que ele estará no ônibus.
-
-**Instruções:**
-- Criar uma operação para registrar uma solicitação com ônibus, parada de subida e parada de descida.
-- Atualizar a ocupação de cada trecho entre as paradas selecionadas, sem incrementar os trechos fora desse intervalo.
-- Revalidar a capacidade disponível nos trechos antes de confirmar a solicitação.
-- Retornar a solicitação confirmada ou uma mensagem de indisponibilidade quando qualquer trecho estiver cheio.
-
-**Critérios de aceite:**
-- A solicitação válida aumenta em um passageiro a ocupação dos trechos entre subida e descida.
-- A ocupação de trechos antes da subida e depois da descida não muda.
-- Uma solicitação que excede a capacidade em algum trecho não é confirmada.
-- Testes verificam o cálculo de ocupação em trechos compartilhados e não compartilhados.
-
-## 5. Garantir consistência em solicitações simultâneas
-
-**Objetivo:** impedir que solicitações concorrentes deixem a lotação inconsistente ou acima da capacidade.
-
-**Instruções:**
-- Tornar atômica a validação de capacidade e a gravação da solicitação/ocupação.
-- Definir o comportamento quando duas solicitações disputam os últimos lugares de um mesmo trecho.
-- Evitar que uma falha parcial deixe a solicitação gravada sem atualizar a ocupação, ou o contrário.
-
-**Critérios de aceite:**
-- Em solicitações concorrentes, nenhuma confirmação ultrapassa a capacidade de qualquer trecho.
-- Falhas não deixam dados parcialmente atualizados.
-- Testes de concorrência exercitam a disputa pelo último lugar disponível.
-
-## 6. Criar a interface do site
-
-**Objetivo:** oferecer ao usuário o fluxo descrito sem exigir chamadas manuais à API.
-
-**Instruções:**
-- Criar uma tela para escolher uma das linhas disponíveis.
-- Exibir os ônibus da linha com estado, horário de saída e ocupação em relação à capacidade.
-- Ao selecionar um ônibus, apresentar paradas ordenadas e posição atual.
-- Solicitar as paradas de subida e descida, mostrar erros de validação e enviar a solicitação à API.
-- Atualizar a lotação exibida após confirmação e informar indisponibilidade quando a capacidade for insuficiente.
-
-**Critérios de aceite:**
-- O usuário completa o fluxo de seleção de linha, ônibus e paradas pela interface.
-- O site apresenta os dados retornados pela API, sem valores fictícios.
-- Erros de validação e de capacidade são mostrados de forma compreensível.
-- Testes cobrem o fluxo principal e respostas de erro da API.
+1. [ ] Definir modelos para linhas, ônibus e paradas com identificadores estáveis.
+   - Criar classes de domínio separadas para linha, ônibus e parada, com identificadores únicos e campos essenciais.
+   - Escolher tipos adequados para identificadores, horários, estado e capacidade; evitar usar texto livre para valores com opções fechadas.
+2. [ ] Associar ônibus às linhas e ordenar as paradas de cada linha.
+   - Representar a relação de cada ônibus com uma linha e cada parada com sua linha.
+   - Armazenar uma ordem explícita para cada parada e garantir que a ordenação seja única dentro da linha.
+3. [ ] Registrar a capacidade, a lotação por trecho, o horário de saída, o estado e a posição atual de cada ônibus.
+   - Definir os campos do ônibus e representar a ocupação entre cada par de paradas consecutivas.
+   - Definir valores permitidos para o estado do ônibus e como a posição atual se relaciona com as paradas da linha.
+4. [ ] Configurar persistência para manter os dados após reiniciar a aplicação.
+   - Selecionar e configurar um banco de dados compatível com o projeto e a dependência de acesso a dados.
+   - Criar repositórios e o esquema/tabelas para linhas, ônibus, paradas, ocupação por trecho e solicitações.
+   - Configurar inicialização de dados de desenvolvimento, se necessária, sem depender de dados fictícios nos endpoints.
+5. [ ] Validar os dados de domínio: limitar a três linhas e impedir lotação acima da capacidade.
+   - Aplicar validações ao criar ou alterar dados, verificando limites, campos obrigatórios e relações válidas.
+   - Rejeitar a criação de uma quarta linha e qualquer ocupação negativa ou superior à capacidade.
+6. [ ] Criar operação para listar as linhas disponíveis.
+   - Implementar um endpoint de consulta que leia as linhas persistidas e retorne identificador e informações úteis para seleção.
+   - Retornar uma coleção vazia quando não houver linhas cadastradas, sem criar resultados estáticos.
+7. [ ] Criar operação para listar os ônibus de uma linha com estado, horário de saída, lotação e capacidade.
+   - Implementar um endpoint que receba o identificador da linha e consulte somente os ônibus associados a ela.
+   - Montar uma resposta com identificador do ônibus, estado, horário, capacidade e lotação atual; se a lotação variar por trecho, indicar claramente qual trecho ou resumir conforme regra definida.
+8. [ ] Tratar identificadores inválidos e linhas ou ônibus inexistentes com respostas apropriadas.
+   - Validar formato e existência dos identificadores nos endpoints.
+   - Usar códigos HTTP adequados e mensagens de erro consistentes, sem retornar objetos vazios como se a consulta tivesse sucesso.
+9. [ ] Criar operação para consultar as paradas ordenadas de uma linha e a posição atual de um ônibus.
+   - Implementar uma consulta que retorne as paradas por ordem de percurso e a posição mais recente do ônibus selecionado.
+   - Confirmar que o ônibus pertence à linha solicitada antes de devolver os dados.
+10. [ ] Validar que as paradas de embarque e desembarque pertençam à linha escolhida.
+   - Ao receber uma solicitação, carregar as paradas informadas e conferir sua associação à linha do ônibus.
+   - Rejeitar a solicitação quando uma parada não existir ou pertencer a outra linha.
+11. [ ] Validar que a parada de desembarque venha depois da parada de embarque no sentido do percurso.
+   - Comparar a ordem cadastrada das duas paradas na linha.
+   - Aceitar somente quando o índice/ordem do desembarque for maior que o do embarque e retornar erro claro nos demais casos.
+12. [ ] Criar operação para registrar uma solicitação com ônibus e paradas de embarque e desembarque.
+   - Definir o formato da requisição e da resposta da solicitação.
+   - Validar ônibus e paradas, aplicar as regras de percurso e só então iniciar a verificação de capacidade e o registro.
+13. [ ] Verificar a capacidade disponível em todos os trechos antes de confirmar uma solicitação.
+   - Identificar todos os trechos consecutivos cobertos pelo percurso entre embarque e desembarque.
+   - Conferir a ocupação atual e a capacidade do ônibus em cada trecho; recusar integralmente a viagem se qualquer um estiver cheio.
+14. [ ] Atualizar a lotação somente nos trechos entre embarque e desembarque.
+   - Após validar disponibilidade, acrescentar exatamente um passageiro a cada trecho abrangido pela viagem.
+   - Não alterar os trechos anteriores ao embarque nem posteriores ao desembarque e devolver a lotação atualizada na resposta ou consulta subsequente.
+15. [ ] Garantir que falhas durante o registro não deixem a solicitação e a lotação parcialmente atualizadas.
+   - Executar validação final, criação da solicitação e atualização de todos os trechos em uma única transação.
+   - Configurar rollback quando qualquer gravação falhar e responder com erro sem declarar a solicitação confirmada.
+16. [ ] Impedir que solicitações simultâneas façam a lotação ultrapassar a capacidade de qualquer trecho.
+   - Aplicar controle transacional e de concorrência no banco durante a verificação e atualização de ocupação.
+   - Escolher mecanismo apropriado, como bloqueio das linhas de ocupação afetadas ou atualização condicional atômica, e tratar conflito como indisponibilidade.
+17. [ ] Criar testes para modelos, persistência, consultas, validações das paradas, capacidade por trecho e concorrência.
+   - Adicionar testes unitários para regras de domínio e validações.
+   - Adicionar testes de integração para repositórios e endpoints, incluindo erros e dados inexistentes.
+   - Testar viagens sobrepostas e não sobrepostas, capacidade no limite e solicitações concorrentes.
+18. [ ] Criar interface para selecionar linha e ônibus e consultar estado, horário, lotação e capacidade.
+   - Escolher uma tecnologia de interface compatível com o repositório ou adicionar uma aplicação web separada conforme decisão do projeto.
+   - Consumir os endpoints de linhas e ônibus e apresentar os campos retornados em controles de seleção e listagens.
+19. [ ] Exibir na interface as paradas ordenadas e a posição atual do ônibus.
+   - Ao escolher um ônibus, consultar a linha e mostrar a posição atual junto à lista ordenada de paradas.
+   - Atualizar a visualização quando o usuário trocar de ônibus ou linha e tratar falhas da consulta.
+20. [ ] Permitir a seleção das paradas de embarque e desembarque pela interface e apresentar erros de validação.
+   - Fornecer controles para escolher as paradas exibidas, sem aceitar valores fora da linha selecionada.
+   - Enviar a seleção à API e exibir as mensagens de validação recebidas quando as paradas forem incompatíveis ou estiverem na ordem errada.
+21. [ ] Exibir a confirmação, a lotação atualizada ou a falta de capacidade após o envio da solicitação.
+   - Enviar os dados da viagem à operação de registro e interpretar respostas de sucesso e erro.
+   - Em caso de sucesso, apresentar confirmação e atualizar os dados de lotação; em caso de indisponibilidade, informar que a viagem não foi registrada.
+22. [ ] Criar testes de integração para o fluxo da interface e as respostas de erro da API.
+   - Automatizar o fluxo desde a seleção de linha até o registro da viagem, cobrindo sucesso e falhas de validação/capacidade.
+   - Verificar a comunicação com a API e garantir que a interface não apresente confirmação para uma solicitação rejeitada.
