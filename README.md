@@ -46,6 +46,8 @@ A aplicação permitirá que o usuário consulte os ônibus disponíveis em uma 
 
 As tarefas necessárias para implementar esses serviços estão listadas em [BACKLOG.md](./BACKLOG.md).
 
+Para orientar o uso de IA em outras conversas e manter as decisões e prioridades do projeto, consulte [PROMPTSIA.md](./PROMPTSIA.md).
+
 ## Como executar o projeto
 
 ### Pré-requisitos

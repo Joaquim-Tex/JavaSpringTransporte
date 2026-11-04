@@ -1,6 +1,6 @@
 # Backlog
 
-1. [ ] Definir modelos para linhas, ônibus e paradas com identificadores estáveis.
+1. [x] Definir modelos para linhas, ônibus e paradas com identificadores estáveis.
    - Criar classes de domínio separadas para linha, ônibus e parada, com identificadores únicos e campos essenciais.
    - Escolher tipos adequados para identificadores, horários, estado e capacidade; evitar usar texto livre para valores com opções fechadas.
 2. [ ] Associar ônibus às linhas e ordenar as paradas de cada linha.
