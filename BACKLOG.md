@@ -3,7 +3,7 @@
 1. [x] Definir modelos para linhas, ônibus e paradas com identificadores estáveis.
    - Criar classes de domínio separadas para linha, ônibus e parada, com identificadores únicos e campos essenciais.
    - Escolher tipos adequados para identificadores, horários, estado e capacidade; evitar usar texto livre para valores com opções fechadas.
-2. [ ] Associar ônibus às linhas e ordenar as paradas de cada linha.
+2. [x] Associar ônibus às linhas e ordenar as paradas de cada linha.
    - Representar a relação de cada ônibus com uma linha e cada parada com sua linha.
    - Armazenar uma ordem explícita para cada parada e garantir que a ordenação seja única dentro da linha.
 3. [ ] Registrar a capacidade, a lotação por trecho, o horário de saída, o estado e a posição atual de cada ônibus.
