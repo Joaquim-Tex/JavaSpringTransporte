@@ -6,9 +6,9 @@
 2. [x] Associar ônibus às linhas e ordenar as paradas de cada linha.
    - Representar a relação de cada ônibus com uma linha e cada parada com sua linha.
    - Armazenar uma ordem explícita para cada parada e garantir que a ordenação seja única dentro da linha.
-3. [ ] Registrar a capacidade, a lotação por trecho, o horário de saída, o estado e a posição atual de cada ônibus.
+3. [x] Registrar a capacidade, a lotação por trecho, o horário de saída, o estado e a posição atual de cada ônibus.
    - Definir os campos do ônibus e representar a ocupação entre cada par de paradas consecutivas.
-   - Definir valores permitidos para o estado do ônibus e como a posição atual se relaciona com as paradas da linha.
+   - Definir os valores permitidos para o estado do ônibus e representar a posição atual pelo identificador de uma parada da linha.
 4. [ ] Configurar persistência para manter os dados após reiniciar a aplicação.
    - Selecionar e configurar um banco de dados compatível com o projeto e a dependência de acesso a dados.
    - Criar repositórios e o esquema/tabelas para linhas, ônibus, paradas, ocupação por trecho e solicitações.
